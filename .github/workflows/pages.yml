@@ -27,16 +27,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
+      - name: Verify Pages Configuration
+        run: |
+          echo "Checking GitHub Pages configuration..."
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
+        with:
+          enablement: true
+
+      - name: Prepare deployment files
+        run: |
+          echo "Preparing files for deployment..."
+          # Ensure index.html exists
+          if [ ! -f "index.html" ]; then
+            echo "Error: index.html not found!"
+            exit 1
+          fi
+          echo "✓ index.html found"
+
+          # List files that will be deployed
+          echo "Files to be deployed:"
+          find . -type f -not -path "./.git/*" | head -20
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository (excluding .git and other ignored files)
-          path: '.'
-          
+          path: "."
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
