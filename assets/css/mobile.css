@@ -1,0 +1,930 @@
+/**
+ * NetPulse - Mobile Optimizations
+ * Mobile-first responsive design enhancements and touch optimizations
+ */
+
+/* Ensure mobile navigation is always visible */
+.mobile-nav {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 9999 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+/* Mobile-First Base Styles */
+@media (max-width: 767px) {
+  /* Enhanced touch targets */
+  .btn,
+  .button,
+  button,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  /* Improved text readability on mobile */
+  body {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Mobile container adjustments */
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  /* Mobile grid adjustments */
+  .grid {
+    gap: var(--spacing-sm);
+  }
+
+  /* Mobile typography scaling */
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* Touch Optimizations */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Navigation - Enhanced App-like Design */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--background-primary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-color);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  z-index: 9999;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  display: flex !important;
+  align-items: center;
+  justify-content: space-around;
+  transform: translateZ(0);
+  will-change: transform;
+  min-height: 60px;
+}
+
+.mobile-nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  min-height: 56px;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  min-width: 64px;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.mobile-nav-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--primary-color);
+  border-radius: 50%;
+  opacity: 0.1;
+  transform: translate(-50%, -50%);
+  transition: all var(--transition-fast);
+  z-index: -1;
+}
+
+.mobile-nav-item:active::before {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+}
+
+.mobile-nav-item.active {
+  color: var(--primary-color);
+  background: rgba(102, 126, 234, 0.08);
+  transform: translateY(-2px);
+}
+
+.mobile-nav-item.active::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  animation: nav-indicator-pulse 2s ease-in-out infinite;
+}
+
+.mobile-nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: var(--spacing-xs);
+  transition: transform var(--transition-fast);
+  position: relative;
+}
+
+.mobile-nav-item.active .mobile-nav-icon {
+  transform: scale(1.1);
+}
+
+.mobile-nav-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  opacity: 0.8;
+}
+
+.mobile-nav-item.active .mobile-nav-label {
+  opacity: 1;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Navigation Badge for notifications */
+.mobile-nav-badge {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: var(--error-color);
+  color: white;
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: badge-bounce 0.5s ease-out;
+  box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+@keyframes nav-indicator-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(1.2);
+  }
+}
+
+@keyframes badge-bounce {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Mobile Cards */
+.mobile-card {
+  background: var(--background-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.mobile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.mobile-card-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: var(--spacing-xs) 0 0 0;
+}
+
+/* Mobile Buttons */
+.mobile-btn {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  min-height: 48px;
+}
+
+.mobile-btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+}
+
+.mobile-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.mobile-btn-secondary {
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.mobile-btn-secondary:hover {
+  background: var(--background-tertiary);
+}
+
+.mobile-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Compact mobile buttons for headers */
+.mobile-btn-compact {
+  width: auto;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  min-height: 36px;
+  border-radius: var(--radius-md);
+}
+
+.mobile-btn-danger {
+  background: var(--error-color);
+  color: white;
+}
+
+.mobile-btn-danger:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+/* Test header controls */
+.test-header-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+/* Mobile Progress Indicators */
+.mobile-progress {
+  width: 100%;
+  height: 8px;
+  background: var(--background-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: var(--spacing-md) 0;
+}
+
+.mobile-progress-bar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+  width: 0%;
+}
+
+.mobile-progress-animated {
+  animation: progress-pulse 2s ease-in-out infinite;
+}
+
+@keyframes progress-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Mobile Status Indicators */
+.mobile-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin: var(--spacing-sm) 0;
+}
+
+.mobile-status-success {
+  background: rgba(76, 175, 80, 0.1);
+  color: var(--success-color);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.mobile-status-warning {
+  background: rgba(255, 152, 0, 0.1);
+  color: var(--warning-color);
+  border: 1px solid rgba(255, 152, 0, 0.2);
+}
+
+.mobile-status-error {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--error-color);
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.mobile-status-info {
+  background: rgba(33, 150, 243, 0.1);
+  color: var(--info-color);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+/* Mobile Metrics Display */
+.mobile-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+}
+
+.mobile-metric {
+  background: var(--background-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.mobile-metric-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+  line-height: 1;
+}
+
+.mobile-metric-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--font-weight-medium);
+}
+
+.mobile-metric-unit {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Mobile Animations */
+.mobile-fade-in {
+  animation: mobile-fadeIn 0.3s ease-out;
+}
+
+.mobile-slide-up {
+  animation: mobile-slideUp 0.3s ease-out;
+}
+
+.mobile-bounce {
+  animation: mobile-bounce 0.6s ease-out;
+}
+
+@keyframes mobile-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobile-bounce {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* Mobile Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+  .mobile-card {
+    background: var(--background-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-nav {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top-color: var(--border-color);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .mobile-nav-item.active {
+    background: rgba(102, 126, 234, 0.15);
+  }
+
+  .mobile-btn-secondary {
+    background: var(--background-tertiary);
+    border-color: var(--border-color);
+  }
+
+  .mobile-fab {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .mobile-fab:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  }
+
+  .mobile-metric {
+    background: var(--background-tertiary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .mobile-status {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .mobile-pull-refresh-indicator {
+    background: var(--background-secondary);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Floating Action Button */
+.mobile-fab {
+  position: fixed;
+  bottom: 80px;
+  right: var(--spacing-md);
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: calc(var(--z-fixed) + 1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(0);
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-fab:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.mobile-fab:active {
+  transform: scale(0.95);
+}
+
+.mobile-fab.hidden {
+  transform: scale(0) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mobile-fab-icon {
+  transition: transform var(--transition-fast);
+}
+
+.mobile-fab:hover .mobile-fab-icon {
+  transform: rotate(90deg);
+}
+
+/* Swipe Gesture Indicators */
+.mobile-swipe-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 40px;
+  background: var(--primary-color);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.mobile-swipe-indicator.left {
+  left: 0;
+  animation: swipe-left 1s ease-in-out;
+}
+
+.mobile-swipe-indicator.right {
+  right: 0;
+  animation: swipe-right 1s ease-in-out;
+}
+
+@keyframes swipe-left {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-10px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes swipe-right {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(10px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* Mobile Landscape Optimizations */
+@media (max-width: 767px) and (orientation: landscape) {
+  .mobile-nav {
+    padding: var(--spacing-xs);
+  }
+
+  .mobile-nav-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    min-height: 44px;
+  }
+
+  .mobile-nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobile-nav-label {
+    font-size: 10px;
+  }
+
+  .mobile-card {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .mobile-fab {
+    width: 48px;
+    height: 48px;
+    bottom: 60px;
+    right: var(--spacing-sm);
+  }
+}
+
+/* Mobile App Layout Enhancements */
+.app-main {
+  padding-bottom: 80px; /* Space for navigation */
+  min-height: 100vh;
+  background: var(--background-primary);
+}
+
+@media (max-width: 767px) {
+  .app-main {
+    padding-bottom: 90px;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0 var(--spacing-md);
+  }
+
+  /* Enhanced mobile cards */
+  .mobile-card {
+    margin: 0 0 var(--spacing-md) 0;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+    background: var(--background-primary);
+  }
+
+  /* Mobile-optimized buttons */
+  .mobile-btn {
+    border-radius: var(--radius-xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  }
+
+  .mobile-btn-primary {
+    background: linear-gradient(
+      135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 100%
+    );
+  }
+
+  /* Enhanced metrics display */
+  .mobile-metrics {
+    gap: var(--spacing-md);
+  }
+
+  .mobile-metric {
+    background: var(--background-secondary);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-lg);
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Status indicators */
+  .mobile-status {
+    border-radius: var(--radius-xl);
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Mobile Safe Area Support (for devices with notches) */
+@supports (padding: max(0px)) {
+  .mobile-nav {
+    padding-bottom: max(var(--spacing-sm), env(safe-area-inset-bottom));
+  }
+
+  .container {
+    padding-left: max(var(--spacing-sm), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-sm), env(safe-area-inset-right));
+  }
+
+  .app-main {
+    padding-bottom: max(90px, calc(80px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* Mobile Performance Optimizations */
+.mobile-optimized {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Mobile Touch Feedback */
+.mobile-touch-feedback {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-touch-feedback::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.mobile-touch-feedback:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* Pull-to-Refresh */
+.mobile-pull-refresh {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-pull-refresh-indicator {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: var(--background-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  z-index: 10;
+}
+
+.mobile-pull-refresh-indicator.visible {
+  top: 20px;
+}
+
+.mobile-pull-refresh-indicator.loading {
+  animation: spin 1s linear infinite;
+}
+
+.mobile-pull-refresh-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--primary-color);
+  transition: transform var(--transition-fast);
+}
+
+.mobile-pull-refresh-indicator.pulling .mobile-pull-refresh-icon {
+  transform: rotate(180deg);
+}
+
+/* View Transitions - Simplified */
+.mobile-view-container {
+  position: relative;
+  height: calc(100vh - 160px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Skeleton Loading */
+.mobile-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--background-secondary) 25%,
+    var(--background-tertiary) 50%,
+    var(--background-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+.mobile-skeleton-text {
+  height: 16px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.mobile-skeleton-title {
+  height: 24px;
+  width: 60%;
+  margin-bottom: var(--spacing-md);
+}
+
+.mobile-skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Haptic Feedback Simulation */
+.mobile-haptic-light {
+  animation: haptic-light 0.1s ease-out;
+}
+
+.mobile-haptic-medium {
+  animation: haptic-medium 0.15s ease-out;
+}
+
+.mobile-haptic-heavy {
+  animation: haptic-heavy 0.2s ease-out;
+}
+
+@keyframes haptic-light {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes haptic-medium {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes haptic-heavy {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

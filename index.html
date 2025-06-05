@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="NetPulse - Mobile network monitoring and speed testing application">
+    <meta name="keywords" content="network, speed test, latency, ping, mobile, monitoring">
+    <meta name="author" content="NetPulse">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="NetPulse">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="favicon_io/favicon-32x32.png">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <title>NetPulse - Network Monitor</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/mobile.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+
+<body>
+    <!-- Main Application Container -->
+    <div id="app" class="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content flex items-center justify-between">
+                    <div class="logo-section flex items-center">
+                        <div class="logo">
+                            <img src="NetPulseIcon.jpg" alt="NetPulse Logo" width="32" height="32"
+                                style="border-radius: 6px;">
+                        </div>
+                        <h1 class="app-title">NetPulse</h1>
+                    </div>
+
+                    <div class="header-actions">
+                        <div id="connection-status" class="connection-status connection-status-good">
+                            <div class="connection-status-icon"></div>
+                            <span id="connection-text">Connected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main mobile-pull-refresh" id="main-content">
+            <!-- Pull-to-Refresh Indicator -->
+            <div id="pull-refresh-indicator" class="mobile-pull-refresh-indicator">
+                <div class="mobile-pull-refresh-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="container mobile-view-container">
+                <!-- Home View -->
+                <div id="home-view" class="view active" style="display: block;">
+                    <div class="welcome-section text-center p-lg">
+                        <h2 class="welcome-title">Network Performance Monitor</h2>
+                        <p class="welcome-subtitle text-secondary">
+                            Test your internet speed, latency, and connection quality
+                        </p>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div id="quick-stats" class="mobile-card hidden">
+                        <div class="mobile-card-header">
+                            <h3 class="mobile-card-title">Last Test Results</h3>
+                            <span id="last-test-time" class="text-sm text-secondary"></span>
+                        </div>
+                        <div class="mobile-metrics">
+                            <div class="mobile-metric">
+                                <div id="quick-download" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Download</div>
+                            </div>
+                            <div class="mobile-metric">
+                                <div id="quick-upload" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Upload</div>
+                            </div>
+                            <div class="mobile-metric">
+                                <div id="quick-latency" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Latency</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test Controls -->
+                    <div class="test-controls">
+                        <button id="start-complete-test" class="mobile-btn mobile-btn-primary mobile-touch-feedback">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M8 5v10l7-5-7-5z" />
+                            </svg>
+                            Start Network Test
+                        </button>
+
+
+                    </div>
+
+                    <!-- Device Information -->
+                    <div class="mobile-card">
+                        <div class="mobile-card-header">
+                            <h3 class="mobile-card-title">Device Information</h3>
+                        </div>
+                        <div id="device-info-display" class="text-sm">
+                            Loading device information...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Progress View -->
+                <div id="test-view" class="view" style="display: none;">
+                    <div class="mobile-card">
+                        <div class="mobile-card-header">
+                            <h3 id="test-view-title" class="mobile-card-title">Network Speed Test</h3>
+                            <div class="test-header-controls">
+                                <button id="start-test"
+                                    class="mobile-btn mobile-btn-primary mobile-btn-compact mobile-touch-feedback">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M8 5v10l7-5-7-5z" />
+                                    </svg>
+                                    Start
+                                </button>
+                                <button id="stop-test"
+                                    class="mobile-btn mobile-btn-danger mobile-btn-compact mobile-touch-feedback"
+                                    style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <rect x="6" y="6" width="8" height="8" />
+                                    </svg>
+                                    Stop
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Progress Indicator -->
+                        <div id="progress-indicator" class="progress-indicator" style="display: none;">
+                            <div class="progress-label">
+                                <span id="progress-text" class="progress-text">Initializing...</span>
+                                <span id="progress-percentage" class="progress-percentage">0%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Metrics -->
+                        <div class="mobile-metrics">
+                            <div class="mobile-metric">
+                                <div id="realtime-download" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Download</div>
+                                <div class="mobile-metric-unit">Mbps</div>
+                            </div>
+                            <div class="mobile-metric">
+                                <div id="realtime-upload" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Upload</div>
+                                <div class="mobile-metric-unit">Mbps</div>
+                            </div>
+                            <div class="mobile-metric">
+                                <div id="realtime-latency" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Latency</div>
+                                <div class="mobile-metric-unit">ms</div>
+                            </div>
+                            <div class="mobile-metric">
+                                <div id="realtime-jitter" class="mobile-metric-value">--</div>
+                                <div class="mobile-metric-label">Jitter</div>
+                                <div class="mobile-metric-unit">ms</div>
+                            </div>
+                        </div>
+
+                        <!-- Status Display -->
+                        <div id="test-status" class="mobile-status mobile-status-info">
+                            <div class="mobile-status-icon">ℹ️</div>
+                            <span id="test-status-text">Click "Start Test" to begin network speed testing</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Real-time Dashboard View -->
+                <div id="dashboard-view" class="view" style="display: none;">
+                    <div class="mobile-card">
+                        <div class="mobile-card-header">
+                            <h3 class="mobile-card-title">Real-time Network</h3>
+                            <div class="dashboard-controls">
+                                <button id="start-monitoring"
+                                    class="mobile-btn mobile-btn-primary mobile-btn-compact mobile-touch-feedback">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M8 5v10l7-5-7-5z" />
+                                    </svg>
+                                    Start
+                                </button>
+                                <button id="pause-monitoring"
+                                    class="mobile-btn mobile-btn-secondary mobile-touch-feedback"
+                                    style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M6 4h2v12H6V4zm6 0h2v12h-2V4z" />
+                                    </svg>
+                                    Pause
+                                </button>
+                                <button id="stop-monitoring" class="mobile-btn mobile-btn-danger mobile-touch-feedback"
+                                    style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <rect x="6" y="6" width="8" height="8" />
+                                    </svg>
+                                    Stop
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Monitoring Status -->
+                        <div id="monitoring-status" class="mobile-status mobile-status-info">
+                            <div class="mobile-status-icon">ℹ️</div>
+                            <span id="monitoring-status-text">Ready to start monitoring</span>
+                        </div>
+
+                        <!-- Real-time Dashboard Container -->
+                        <div id="realtime-dashboard-container"></div>
+                    </div>
+                </div>
+
+                <!-- Results View -->
+                <div id="results-view" class="view" style="display: none;">
+                    <div class="results-display">
+                        <div class="results-header">
+                            <h3 class="results-title">Test Results</h3>
+                            <span id="results-timestamp" class="results-timestamp"></span>
+                        </div>
+
+                        <!-- Main Results Grid -->
+                        <div class="results-grid">
+                            <div class="results-metric">
+                                <div id="final-download" class="results-metric-value">--</div>
+                                <div class="results-metric-unit">Mbps</div>
+                                <div class="results-metric-label">Download</div>
+                            </div>
+                            <div class="results-metric">
+                                <div id="final-upload" class="results-metric-value">--</div>
+                                <div class="results-metric-unit">Mbps</div>
+                                <div class="results-metric-label">Upload</div>
+                            </div>
+                            <div class="results-metric">
+                                <div id="final-latency" class="results-metric-value">--</div>
+                                <div class="results-metric-unit">ms</div>
+                                <div class="results-metric-label">Latency</div>
+                            </div>
+                            <div class="results-metric">
+                                <div id="final-jitter" class="results-metric-value">--</div>
+                                <div class="results-metric-unit">ms</div>
+                                <div class="results-metric-label">Jitter</div>
+                            </div>
+                        </div>
+
+                        <!-- Connection Quality -->
+                        <div class="mobile-card">
+                            <div class="mobile-card-header">
+                                <h4 class="mobile-card-title">Connection Quality</h4>
+                            </div>
+                            <div id="quality-assessment" class="text-center">
+                                <div id="quality-score" class="text-3xl font-bold mb-sm">--</div>
+                                <div id="quality-description" class="text-secondary"></div>
+                            </div>
+                        </div>
+
+                        <!-- Test Again Button -->
+                        <div class="test-controls">
+                            <button id="test-again" class="mobile-btn mobile-btn-primary mobile-touch-feedback">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path
+                                        d="M4 2v6h6M16 18v-6h-6M4 8l2.5-2.5C8.5 3.5 12 3.5 14 5.5s2 5 0 7-5.5 2-7.5 0" />
+                                </svg>
+                                Test Again
+                            </button>
+                            <button id="share-results" class="mobile-btn mobile-btn-secondary mobile-touch-feedback">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path
+                                        d="M15 8a3 3 0 1 0-2.977-2.63l-4.94 2.47a3 3 0 1 0 0 4.319l4.94 2.47a3 3 0 1 0 .895-1.789l-4.94-2.47a3.027 3.027 0 0 0 0-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                                </svg>
+                                Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav mobile-touch-feedback">
+            <a href="#" class="mobile-nav-item mobile-touch-feedback active" data-view="home" aria-label="Home">
+                <div class="mobile-nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </div>
+                <div class="mobile-nav-label">Home</div>
+            </a>
+            <a href="#" class="mobile-nav-item mobile-touch-feedback" data-view="dashboard"
+                aria-label="Real-time Monitor">
+                <div class="mobile-nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                    </svg>
+                </div>
+                <div class="mobile-nav-label">Monitor</div>
+            </a>
+            <a href="#" class="mobile-nav-item mobile-touch-feedback" data-view="test" aria-label="Network Test">
+                <div class="mobile-nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                </div>
+                <div class="mobile-nav-label">Test</div>
+            </a>
+            <a href="#" class="mobile-nav-item mobile-touch-feedback" data-view="results" aria-label="Test Results">
+                <div class="mobile-nav-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                    </svg>
+                </div>
+                <div class="mobile-nav-label">Results</div>
+                <div id="results-badge" class="mobile-nav-badge hidden">1</div>
+            </a>
+        </nav>
+
+        <!-- Floating Action Button -->
+        <button id="mobile-fab" class="mobile-fab mobile-touch-feedback" aria-label="Start Quick Test">
+            <div class="mobile-fab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5v10l7-5-7-5z" />
+                </svg>
+            </div>
+        </button>
+
+        <!-- Swipe Indicators -->
+        <div id="swipe-left" class="mobile-swipe-indicator left"></div>
+        <div id="swipe-right" class="mobile-swipe-indicator right"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner loading-spinner-lg"></div>
+        <div class="loading-text">Loading NetPulse...</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/config.js"></script>
+    <script src="utils/constants.js"></script>
+    <script src="utils/dom-helpers.js"></script>
+    <script src="utils/math-utils.js"></script>
+    <script src="utils/error-handler.js"></script>
+    <script src="utils/device-detection.js"></script>
+    <script src="utils/formatters.js"></script>
+    <script src="assets/js/latency-test.js"></script>
+    <script src="assets/js/speed-test.js"></script>
+    <script src="assets/js/network-test.js"></script>
+    <script src="assets/js/continuous-monitor.js"></script>
+
+    <script src="components/realtime-dashboard.js"></script>
+    <script src="assets/js/mobile-navigation.js"></script>
+    <script src="assets/js/ui-controller.js"></script>
+    <script src="assets/js/app.js"></script>
+
+
+</body>
+
+</html>
