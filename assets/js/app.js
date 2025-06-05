@@ -166,9 +166,12 @@ class NetPulseApp {
       await this.networkTest.startCompleteTest({}, {
         onTestStart: () => {
           this.uiController.updateTestStatus('info', CONFIG.MESSAGES.TEST_STARTED);
+          this.uiController.resetRealtimeValues(); // Reset values for new test
         },
         onTestProgress: (data) => {
           this.uiController.updateTestProgress(data);
+          // Also update real-time metrics for latency and jitter
+          this.uiController.updateRealTimeMetrics(data);
         },
         onTestComplete: (data) => {
           this.state.lastResults = data;

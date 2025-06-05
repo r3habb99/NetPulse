@@ -10,6 +10,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* Ensure smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -17,6 +19,8 @@ body {
   line-height: 1.6;
   color: var(--text-primary);
   background: var(--background-primary);
+  /* Prevent zoom on double tap */
+  touch-action: manipulation;
 }
 
 /* App Container */
@@ -32,6 +36,10 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 80px; /* Space for mobile navigation */
+  /* Improve mobile scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent momentum scrolling issues */
+  overscroll-behavior: contain;
 }
 
 /* CSS Custom Properties (Variables) */
@@ -718,6 +726,9 @@ a:hover {
   height: calc(100vh - 140px);
   overflow-y: auto;
   overflow-x: hidden;
+  /* Improve mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 /* Responsive adjustments */

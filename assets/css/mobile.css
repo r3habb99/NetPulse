@@ -25,6 +25,8 @@
     min-height: 44px;
     min-width: 44px;
     padding: var(--spacing-sm) var(--spacing-md);
+    /* Prevent zoom on double tap for buttons */
+    touch-action: manipulation;
   }
 
   /* Improved text readability on mobile */
@@ -36,6 +38,14 @@
   /* Mobile container adjustments */
   .container {
     padding: 0 var(--spacing-sm);
+  }
+
+  /* Ensure main content allows scrolling */
+  #main-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y; /* Allow vertical panning only */
   }
 
   /* Mobile grid adjustments */
@@ -674,11 +684,20 @@
   padding-bottom: 80px; /* Space for navigation */
   min-height: 100vh;
   background: var(--background-primary);
+  /* Improve mobile scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  /* Prevent zoom on double tap */
+  touch-action: manipulation;
 }
 
 @media (max-width: 767px) {
   .app-main {
     padding-bottom: 90px;
+    /* Ensure proper scrolling on mobile */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .container {

@@ -72,14 +72,14 @@ class MobileNavigation {
 
     container.addEventListener('touchmove', (e) => {
       if (this.isPulling) return;
-      
+
       const touchX = e.touches[0].clientX;
       const touchY = e.touches[0].clientY;
       const deltaX = touchX - this.touchStartX;
       const deltaY = touchY - this.touchStartY;
 
-      // Only handle horizontal swipes
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      // Only prevent default for significant horizontal swipes that are clearly not vertical scrolling
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 100 && Math.abs(deltaY) < 30) {
         e.preventDefault();
       }
     }, { passive: false });
@@ -119,18 +119,19 @@ class MobileNavigation {
     container.addEventListener('touchmove', (e) => {
       currentY = e.touches[0].clientY;
       const deltaY = currentY - startY;
+      const deltaX = Math.abs(e.touches[0].clientX - this.touchStartX);
 
-      // Only allow pull-to-refresh at the top of the page
-      if (container.scrollTop === 0 && deltaY > 0) {
+      // Only allow pull-to-refresh at the top of the page and for primarily vertical movements
+      if (container.scrollTop === 0 && deltaY > 20 && deltaX < 50) {
         e.preventDefault();
         this.isPulling = true;
-        
+
         const pullDistance = Math.min(deltaY, this.pullRefreshThreshold * 1.5);
         const progress = pullDistance / this.pullRefreshThreshold;
-        
+
         indicator.style.transform = `translateX(-50%) translateY(${pullDistance - 60}px)`;
         indicator.style.opacity = Math.min(progress, 1);
-        
+
         if (pullDistance >= this.pullRefreshThreshold) {
           indicator.classList.add('pulling');
         } else {
@@ -139,7 +140,7 @@ class MobileNavigation {
       }
     }, { passive: false });
 
-    container.addEventListener('touchend', (e) => {
+    container.addEventListener('touchend', () => {
       if (!this.isPulling) return;
       
       const deltaY = currentY - startY;
